@@ -1,7 +1,8 @@
 use std::fs;
 
 // const FILE_NAME: &str = "./test.txt";
-const FILE_NAME: &str = "./input.txt";
+// const FILE_NAME: &str = "./input.txt";
+const FILE_NAME: &str = "./input_redo.txt";
 
 // fn process_input(file_contents: String) -> {
 
@@ -109,13 +110,13 @@ fn solve_part_1(file_contents: &String) {
     for (line_num, line) in file_split.iter().enumerate() {
         let bounds = get_digit_start_end_bounds(line);
         for bound in bounds {
-            println!("Checking {} - {}", bound[0], bound[1]);
+            // println!("Checking {} - {}", bound[0], bound[1]);
             if has_surrounding_char(file_split.iter().copied().collect(), line_num as u32, bound) {
                 let new_var = file_split[line_num as usize][bound[0] as usize..=bound[1] as usize]
                     .parse::<u32>()
                     .unwrap();
                 sum += new_var;
-                println!("{new_var}");
+                // println!("{new_var}");
             }
         }
     }
@@ -178,8 +179,8 @@ fn get_gear_ratio(file_split: &Vec<&str>, line_num: usize, col_num: usize) -> u3
     // let is_left = col_num == 0;
     // let is_right = col_num == (file_split[line_num].len() - 1);
     let mut bounds: [usize; 2] = Default::default();
-    println!("{line_num}");
-    println!("{col_num}");
+    // println!("{line_num}");
+    // println!("{col_num}");
     if col_num < 2 {
         bounds[0] = 0;
     } else {
@@ -195,28 +196,28 @@ fn get_gear_ratio(file_split: &Vec<&str>, line_num: usize, col_num: usize) -> u3
     if line_num != 0 {
         let digits_above = get_digits_in_range(file_split[line_num - 1], bounds[0], bounds[1]);
         for digit in digits_above {
-            println!("{digit}");
+            // println!("{digit}");
             digits.push(digit);
         }
     }
     if line_num != file_split.len() - 1 {
         let digits_below = get_digits_in_range(file_split[line_num + 1], bounds[0], bounds[1]);
         for digit in digits_below {
-            println!("{digit}");
+            // println!("{digit}");
             digits.push(digit);
         }
     }
     if col_num >= 2 {
         let digits_left = get_digits_in_range(file_split[line_num], bounds[0], bounds[0]);
         for digit in digits_left {
-            println!("{digit}");
+            // println!("{digit}");
             digits.push(digit);
         }
     }
     if col_num < file_split[line_num].len() - 1 {
         let digits_right = get_digits_in_range(file_split[line_num], bounds[1], bounds[1]);
         for digit in digits_right {
-            println!("{digit}");
+            // println!("{digit}");
             digits.push(digit);
         }
     }
@@ -236,7 +237,7 @@ fn solve_part_2(file_contents: &String) {
             }
             let gear_ratio = get_gear_ratio(&file_split, line_num, col_num);
             if gear_ratio != 0 {
-                println!("{gear_ratio}");
+                // println!("{gear_ratio}");
             }
             sum += gear_ratio;
         }
@@ -247,6 +248,6 @@ fn solve_part_2(file_contents: &String) {
 fn main() {
     let file_contents = fs::read_to_string(FILE_NAME).unwrap();
     // process_input(file_contents);
-    // solve_part_1(&file_contents);
+    solve_part_1(&file_contents);
     solve_part_2(&file_contents);
 }

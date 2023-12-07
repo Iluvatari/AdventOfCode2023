@@ -1,6 +1,7 @@
 use std::fs;
 // const FILE_NAME: &str = "./test.txt";
-const FILE_NAME: &str = "./input.txt";
+// const FILE_NAME: &str = "./input.txt";
+const FILE_NAME: &str = "./input_redo.txt";
 const MAX_BLUE: u32 = 14;
 const MAX_GREEN: u32 = 13;
 const MAX_RED: u32 = 12;
@@ -66,7 +67,7 @@ fn process_input(file_contents: String) -> Vec<Game> {
     return games;
 }
 
-fn solve_part_one(games: Vec<Game>) {
+fn solve_part_one(games: &Vec<Game>) {
     let mut sum: u64 = 0;
     for game in games {
         if (*game.blue.iter().max().unwrap_or(&0) > MAX_BLUE)
@@ -80,7 +81,7 @@ fn solve_part_one(games: Vec<Game>) {
     println!("{sum}");
 }
 
-fn solve_part_two(games: Vec<Game>) {
+fn solve_part_two(games: &Vec<Game>) {
     let mut sum: u64 = 0;
     for game in games {
         let max_blue: u64 = *game.blue.iter().max().unwrap_or(&0) as u64;
@@ -89,12 +90,11 @@ fn solve_part_two(games: Vec<Game>) {
         sum += max_blue * max_green * max_red;
     }
     println!("{sum}");
-    println!("{sum}");
 }
 
 fn main() {
     let file_contents = fs::read_to_string(FILE_NAME).unwrap();
     let games = process_input(file_contents);
-    // solve_part_one(games);
-    solve_part_two(games);
+    solve_part_one(&games);
+    solve_part_two(&games);
 }

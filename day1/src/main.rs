@@ -1,5 +1,11 @@
 use std::fs;
 
+// const file_path: &str = "./test.txt";
+// const file_path: &str = "./test2.txt";
+// const file_path: &str = "./input.txt";
+// const file_path: &str = "./test_redo.txt";
+const file_path: &str = "./input_redo.txt";
+
 const STRING_WORDS: [&str; 10] = [
     "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
 ];
@@ -22,14 +28,32 @@ fn is_digit(string_in: String) -> u32 {
     return 0;
 }
 
-fn main() {
-    // let file_path = "./test.txt";
-    // let file_path = "./test2.txt";
-    let file_path = "./input.txt";
-    let contents = fs::read_to_string(file_path).expect("Failed to read file {file_path}");
-    let split_contents = contents.split("\r\n");
+fn solve_part_1(split_contents: &Vec<&str>) {
     let mut cal_vals: Vec<String> = Vec::new();
-    for (_idx, line) in split_contents.enumerate() {
+    let mut last_digit: char = ';';
+    for (_idx, line) in split_contents.iter().enumerate() {
+        let mut has_first = false;
+        for char in line.chars() {
+            if char.is_digit(10) {
+                if !has_first {
+                    cal_vals.push(char.to_string());
+                    has_first = true;
+                }
+                last_digit = char;
+            }
+        }
+        cal_vals.last_mut().expect("no last").push(last_digit);
+    }
+    let mut sum = 0;
+    for line in cal_vals {
+        // println!("{line}");
+        sum += line.parse::<i32>().unwrap();
+    }
+    println!("{sum}");
+}
+fn solve_part_2(split_contents: &Vec<&str>) {
+    let mut cal_vals: Vec<String> = Vec::new();
+    for (_idx, line) in split_contents.iter().enumerate() {
         let mut has_first = false;
         let mut last_digit: char = ';';
         for idx in 0..line.len() {
@@ -42,22 +66,19 @@ fn main() {
                 last_digit = digit.to_string().chars().nth(0).unwrap();
             }
         }
-        // for char in line.chars() {
-        //     if char.is_digit(10) {
-        //         if !has_first {
-        //             cal_vals.push(char.to_string());
-        //             has_first = true;
-        //         }
-        //         last_digit = char;
-        //     }
-        // }
         cal_vals.last_mut().expect("no last").push(last_digit);
     }
-
     let mut sum = 0;
     for line in cal_vals {
-        println!("{line}");
+        // println!("{line}");
         sum += line.parse::<i32>().unwrap();
     }
     println!("{sum}");
+}
+
+fn main() {
+    let contents = fs::read_to_string(file_path).expect("Failed to read file {file_path}");
+    let split_contents: Vec<&str> = contents.split("\r\n").collect();
+    solve_part_1(&split_contents);
+    solve_part_2(&split_contents);
 }
